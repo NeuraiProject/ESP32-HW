@@ -1,0 +1,25 @@
+{
+  "name": "ESP32 Serial Storage",
+  "version": "1.0.0",
+  "home_assistant_domain": "esphome",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-C6",
+      "parts": [
+        {
+          "path": "firmware/bootloader-XIAO_ESP32C6.bin",
+          "offset": 0
+        },
+        {
+          "path": "firmware/partitions-XIAO_ESP32C6.bin",
+          "offset": 32768
+        },
+        {
+          "path": "firmware/app-XIAO_ESP32C6.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Storage - Flash & Test - Neurai</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <img src="favicon.png" alt="Neurai Logo" class="header-logo">
+                Neurai Flasher
+            </h1>
+            <p>Flash firmware & test your ESP32 Hardware Wallet experiment</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('flash')">⚡ Flash Firmware</button>
+            <button class="tab" onclick="switchTab('test')">🧪 Test</button>
+        </div>
+
+        <!-- FLASH TAB -->
+        <div id="flash-tab" class="tab-content active">
+            <div class="card">
+                <h2>📦 Firmware Information</h2>
+                
+                <div class="firmware-info">
+                    <h3>ESP32 Serial Storage System v1.0.0</h3>
+                    <p><strong>Compatible Chips:</strong> ESP32-C6 (XIAO ESP32C6)</p>
+                    <ul>
+                        <li>Persistent key-value storage using SPIFFS</li>
+                        <li>Web Serial API communication (115200 baud)</li>
+                        <li>JSON-based command protocol</li>
+                        <li>Save, read, delete, list, and clear operations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⚡ Install Firmware</h2>
+                
+                <div class="instructions">
+                    <strong>📋 Instructions:</strong>
+                    <ol>
+                        <li>Connect your ESP32-C6 via USB</li>
+                        <li>Click "Install" and select the serial port</li>
+                        <li>Wait for flashing to complete</li>
+                        <li>Switch to "Test Storage" tab to verify</li>
+                    </ol>
+                </div>
+
+                <esp-web-install-button manifest="manifest.json">
+                    <button slot="activate">Install ESP32 Storage Firmware</button>
+                    <span slot="unsupported">
+                        ⚠️ Your browser doesn't support Web Serial API. Use Chrome, Edge, or Opera.
+                    </span>
+                </esp-web-install-button>
+            </div>
+        </div>
+
+        <!-- TEST TAB -->
+        <div id="test-tab" class="tab-content">
+            <div class="card">
+                <h2>🔌 Connection</h2>
+                
+                <div class="status-box">
+                    <div class="status-indicator" id="statusIndicator"></div>
+                    <span id="statusText">Disconnected</span>
+                </div>
+
+                <div class="controls">
+                    <button class="btn-primary" id="connectBtn" onclick="connectToESP32()">
+                        📱 Connect to ESP32
+                    </button>
+                    <button class="btn-danger" id="disconnectBtn" onclick="disconnectFromESP32()" disabled>
+                        🔌 Disconnect
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💾 Storage Operations</h2>
+                
+                <div class="grid-2">
+                    <div>
+                        <h3 style="color: #1e3c72; margin-bottom: 10px;">Save Data</h3>
+                        <input type="text" id="saveKey" placeholder="Key (e.g., username)">
+                        <input type="text" id="saveValue" placeholder="Value (e.g., John)">
+                        <button class="btn-success" onclick="saveData()" disabled id="saveBtn">
+                            💾 Save
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: #1e3c72; margin-bottom: 10px;">Read Data</h3>
+                        <input type="text" id="readKey" placeholder="Key to read">
+                        <button class="btn-primary" onclick="readData()" disabled id="readBtn">
+                            📖 Read
+                        </button>
+                    </div>
+                </div>
+
+                <div class="result-box" id="resultBox">
+                    <h4 style="margin-bottom: 10px;">📊 Result:</h4>
+                    <pre id="resultContent"></pre>
+                </div>
+
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid #e0e0e0;">
+
+                <h3 style="color: #1e3c72; margin-bottom: 10px;">🗂️ Manage Storage</h3>
+                
+                <div class="controls">
+                    <button class="btn-primary" onclick="listKeys()" disabled id="listBtn">
+                        📋 List All Keys
+                    </button>
+                    <button class="btn-primary" onclick="deleteKey()" disabled id="deleteBtn">
+                        🗑️ Delete Key
+                    </button>
+                    <button class="btn-danger" onclick="clearStorage()" disabled id="clearBtn">
+                        ⚠️ Clear All Storage
+                    </button>
+                </div>
+
+                <input type="text" id="deleteKeyInput" placeholder="Key to delete" style="margin-top: 10px;">
+            </div>
+
+            <div class="card">
+                <h2>📋 Console Log</h2>
+                <button class="btn-primary" onclick="clearLog()" style="float: right;">Clear Log</button>
+                <div class="log-container" id="logContainer">
+                    <div class="log-entry log-info">
+                        <span class="log-time">[Ready]</span> Waiting for connection...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Created by <strong>Neurai Team</strong> | Open Source Project</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
